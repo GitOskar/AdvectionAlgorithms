@@ -33,7 +33,7 @@ public abstract class AdvectionAlgorithm
     }
 
     private void initializeChartYData() {
-        chartYData = gaussianCurveForAllElements(chartXData);
+        chartYData = gaussianCurveForAllElements(chartXData, 0);
         chartYDataTmp = chartYData.clone();
     }
 
@@ -43,36 +43,21 @@ public abstract class AdvectionAlgorithm
         alpha = velocity * deltaTime /(2* deltaX);
     }
 
-    private double[] gaussianCurveForAllElements(double[] array)
-    {
-        double[] result = new double[array.length];
-
-        for (int i=0 ; i<array.length ; i++) {
-            result[i] = gaussianCurve(array[i]);
-        }
-
-        return result;
-    }
-
     private double[] gaussianCurveForAllElements(double[] array, double tc)
     {
         double[] result = new double[array.length];
 
-        if (tc > 1-xc)
+        if (tc+xc > 1) {
             tc -= 1.01;
+        }
 
         for (int i=0 ; i<array.length ; i++) {
             result[i] = gaussianCurve(array[i], tc);
         }
 
-        result[0] = gaussianCurve(result[result.length-2]);
+        result[0] = gaussianCurve(result[result.length-2], 0);
         result[result.length-1] = result[1];
         return result;
-    }
-
-    private double gaussianCurve(double value)
-    {
-        return Math.exp(-200 * Math.pow(value-xc, 2.0));
     }
 
     private double gaussianCurve(double value, double tc)

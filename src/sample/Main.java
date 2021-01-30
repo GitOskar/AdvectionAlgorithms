@@ -1,3 +1,4 @@
+//Oskar Wołosiuk
 package sample;
 
 import javafx.animation.KeyFrame;
